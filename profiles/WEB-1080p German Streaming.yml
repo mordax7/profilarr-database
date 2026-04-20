@@ -1,0 +1,195 @@
+name: WEB-1080p German Streaming
+description: >-
+  Streaming-quality 1080p WEB-only profile with German DL preference.
+
+  - Targets WEB-DL and WEBRip 1080p only (no Bluray, no Remux)
+  - Strongly prefers German DL (Dual Language: Original + German) releases
+  - Accepts English-only releases but upgrades when German DL is available
+  - Rejects releases without German or English audio
+  - HEVC/x265 preferred via WEB tier scoring (most modern WEB-DLs use HEVC)
+  - HDR neutral at 1080p (no bonus or penalty)
+  - Netflix-like streaming quality target
+  - Average Movie Size: 4-10 GB
+  - Average Episode Size: 1-4 GB
+tags:
+  - 1080p
+  - WEB
+  - German
+  - Streaming
+upgradesAllowed: true
+minCustomFormatScore: 0
+upgradeUntilScore: 35000
+minScoreIncrement: 1
+
+# ---------------------------------------------------------------------------
+# Shared custom formats (applied to both Sonarr and Radarr)
+# ---------------------------------------------------------------------------
+custom_formats: []
+
+# ---------------------------------------------------------------------------
+# Sonarr-specific custom formats
+# ---------------------------------------------------------------------------
+custom_formats_sonarr:
+  # --- Resolution boosters ---
+  - name: (TG-S) 1080p
+    score: 50
+  - name: (TG-S) 720p
+    score: 5
+
+  # --- German language scoring (core preference) ---
+  # German DL = Dual Language (Original + German) — the ideal release
+  - name: (TG-S) German DL
+    score: 11000
+  - name: (TG-S) German DL (undefined)
+    score: 11000
+  # German audio present (may be German-only without original)
+  - name: (TG-S) German
+    score: 10000
+  # 1080p quality boost for German releases
+  - name: (TG-S) German 1080p Booster
+    score: 650
+
+  # --- Language rejection ---
+  # Reject releases that have neither German nor English audio
+  - name: (TG-S) Not German or English
+    score: -35000
+
+  # --- German release group tiers ---
+  - name: (TG-S) German Web Tier 01
+    score: 2100
+  - name: (TG-S) German Web Tier 02
+    score: 1900
+  - name: (TG-S) German Web Tier 03
+    score: 1800
+  - name: (TG-S) German Scene
+    score: 1700
+
+  # --- General WEB release group tiers (English/international groups) ---
+  - name: (TG-S) WEB Tier 01
+    score: 1700
+  - name: (TG-S) WEB Tier 02
+    score: 1650
+  - name: (TG-S) WEB Tier 03
+    score: 1600
+
+  # --- Streaming source boost ---
+  - name: (TG-S) HD Streaming Boost
+    score: 75
+
+  # --- Repack/Proper ---
+  - name: (TG-S) Repack&Proper
+    score: 5
+  - name: (TG-S) Repack2
+    score: 6
+  - name: (TG-S) Repack3
+    score: 7
+
+  # --- Bans (hard reject) ---
+  - name: (TG-S) German LQ
+    score: -35000
+  - name: (TG-S) German LQ (release title)
+    score: -35000
+  - name: (TG-S) German Microsized
+    score: -35000
+  - name: (TG-S) BR-DISK
+    score: -35000
+  - name: (TG-S) LQ
+    score: -35000
+  - name: (TG-S) LQ (Release Title)
+    score: -35000
+  - name: (TG-S) Extras
+    score: -35000
+  - name: (TG-S) AV1
+    score: -35000
+  - name: (TG-S) Upscaled
+    score: -35000
+
+# ---------------------------------------------------------------------------
+# Radarr-specific custom formats
+# ---------------------------------------------------------------------------
+custom_formats_radarr:
+  # --- Resolution boosters ---
+  - name: (TG-R) 1080p
+    score: 50
+  - name: (TG-R) 720p
+    score: 5
+
+  # --- German language scoring (core preference) ---
+  - name: (TG-R) German DL
+    score: 11000
+  - name: (TG-R) German DL (undefined)
+    score: 11000
+  - name: (TG-R) German
+    score: 10000
+  - name: (TG-R) German 1080p Booster
+    score: 650
+
+  # --- Language rejection ---
+  - name: (TG-R) Not German or English
+    score: -35000
+
+  # --- German release group tiers ---
+  - name: (TG-R) German Web Tier 01
+    score: 2100
+  - name: (TG-R) German Web Tier 02
+    score: 1900
+  - name: (TG-R) German Web Tier 03
+    score: 1800
+  - name: (TG-R) German Scene
+    score: 1700
+
+  # --- General WEB release group tiers ---
+  - name: (TG-R) WEB Tier 01
+    score: 1700
+  - name: (TG-R) WEB Tier 02
+    score: 1650
+  - name: (TG-R) WEB Tier 03
+    score: 1600
+
+  # --- Repack/Proper ---
+  - name: (TG-R) Repack&Proper
+    score: 5
+  - name: (TG-R) Repack2
+    score: 6
+  - name: (TG-R) Repack3
+    score: 7
+
+  # --- Bans (hard reject) ---
+  - name: (TG-R) German LQ
+    score: -35000
+  - name: (TG-R) German LQ (release title)
+    score: -35000
+  - name: (TG-R) German Microsized
+    score: -35000
+  - name: (TG-R) Line&Mic Dubbed
+    score: -35000
+  - name: (TG-R) BR-DISK
+    score: -35000
+  - name: (TG-R) LQ
+    score: -35000
+  - name: (TG-R) LQ (Release Title)
+    score: -35000
+  - name: (TG-R) 3D
+    score: -35000
+  - name: (TG-R) Extras
+    score: -35000
+  - name: (TG-R) AV1
+    score: -35000
+
+# ---------------------------------------------------------------------------
+# Allowed qualities — WEB only, 1080p target
+# ---------------------------------------------------------------------------
+qualities:
+  - name: WEB 1080p
+    qualities:
+      - id: 11
+        name: WEBRip-1080p
+      - id: 9
+        name: WEBDL-1080p
+    id: -1
+
+upgrade_until:
+  id: -1
+  name: WEB 1080p
+
+language: must_original
