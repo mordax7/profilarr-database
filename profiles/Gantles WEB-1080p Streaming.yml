@@ -1,13 +1,17 @@
-name: WEB-1080p German Streaming
+name: Gantles WEB-1080p Streaming
 description: >-
-  Streaming-quality 1080p WEB-only profile with German DL preference.
+  Streaming-quality 1080p WEB-only profile with tiered language preference.
+
+  Language preference (upgrade ladder):
+    1. Native (Original) + English + German DL — best, no further upgrade
+    2. English + German — great, upgrades if DL appears
+    3. English-only — acceptable, upgrades when German becomes available
+    4. Non-English — rejected
 
   - Targets WEB-DL and WEBRip 1080p only (no Bluray, no Remux)
   - Strongly prefers German DL (Dual Language: Original + German) releases
-  - Accepts English-only releases but upgrades when German DL is available
-  - Rejects releases without German or English audio
-  - HEVC/x265 preferred via WEB tier scoring (most modern WEB-DLs use HEVC)
-  - HDR neutral at 1080p (no bonus or penalty)
+  - English-only releases are grabbed and upgraded when German DL is available
+  - Rejects releases without English audio
   - Netflix-like streaming quality target
   - Average Movie Size: 4-10 GB
   - Average Episode Size: 1-4 GB
@@ -50,9 +54,9 @@ custom_formats_sonarr:
     score: 650
 
   # --- Language rejection ---
-  # Reject releases that have neither German nor English audio
-  - name: (TG-S) Not German or English
-    score: -35000
+  # Reject releases that do not contain English audio
+  - name: (TG-S) Language: Not English
+    score: -10000
 
   # --- German release group tiers ---
   - name: (TG-S) German Web Tier 01
@@ -125,8 +129,9 @@ custom_formats_radarr:
     score: 650
 
   # --- Language rejection ---
-  - name: (TG-R) Not German or English
-    score: -35000
+  # Reject releases that do not contain English audio
+  - name: (TG-R) Language: Not English
+    score: -10000
 
   # --- German release group tiers ---
   - name: (TG-R) German Web Tier 01

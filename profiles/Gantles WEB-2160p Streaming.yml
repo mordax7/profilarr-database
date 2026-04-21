@@ -1,12 +1,18 @@
-name: WEB-2160p German Streaming
+name: Gantles WEB-2160p Streaming
 description: >-
-  Streaming-quality 4K WEB-only profile with German DL preference and HDR boost.
+  Streaming-quality 4K WEB-only profile with tiered language preference and HDR boost.
+
+  Language preference (upgrade ladder):
+    1. Native (Original) + English + German DL — best, no further upgrade
+    2. English + German — great, upgrades if DL appears
+    3. English-only — acceptable, upgrades when German becomes available
+    4. Non-English — rejected
 
   - Targets WEB-DL and WEBRip 2160p primarily (no Bluray, no Remux)
   - Falls back to WEB 1080p while waiting for 4K availability
   - Strongly prefers German DL (Dual Language: Original + German) releases
-  - Accepts English-only releases but upgrades when German DL is available
-  - Rejects releases without German or English audio
+  - English-only releases are grabbed and upgraded when German DL is available
+  - Rejects releases without English audio
   - Prefers HDR (DV > HDR10+ > HDR10 > HLG > SDR) at 4K
   - Rejects Dolby Vision without HDR fallback (compatibility)
   - Netflix-like streaming quality target
@@ -56,9 +62,9 @@ custom_formats_sonarr:
     score: 650
 
   # --- Language rejection ---
-  # Reject releases that have neither German nor English audio
-  - name: (TG-S) Not German or English
-    score: -35000
+  # Reject releases that do not contain English audio
+  - name: (TG-S) Language: Not English
+    score: -10000
 
   # --- German release group tiers ---
   - name: (TG-S) German Web Tier 01
@@ -137,8 +143,9 @@ custom_formats_radarr:
     score: 650
 
   # --- Language rejection ---
-  - name: (TG-R) Not German or English
-    score: -35000
+  # Reject releases that do not contain English audio
+  - name: (TG-R) Language: Not English
+    score: -10000
 
   # --- HDR preference (4K benefit) ---
   # DV with HDR fallback is the best (Plex compatible)
