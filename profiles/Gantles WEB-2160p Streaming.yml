@@ -1,18 +1,20 @@
 name: Gantles WEB-2160p Streaming
 description: >-
-  Streaming-quality 4K WEB-only profile with tiered language preference and HDR boost.
+  Streaming-quality 4K WEB-only profile with 7-tier language preference and HDR boost.
 
-  Language preference (upgrade ladder):
-    1. Native (Original) + English + German DL — best, no further upgrade
-    2. English + German — great, upgrades if DL appears
-    3. English-only — acceptable, upgrades when German becomes available
-    4. Non-English — rejected
+  Language preference (upgrade ladder — grabs first available, upgrades upward):
+    1. Native + English + German — best, no further upgrade
+    2. Native + English — upgrades if German appears
+    3. Native + German — upgrades if English appears
+    4. English + German — upgrades if Native appears
+    5. English only — upgrades when German/Native appears
+    6. Native only — upgrades when English/German appears
+    7. German only — last resort, upgrades toward any better tier
 
   - Targets WEB-DL and WEBRip 2160p primarily (no Bluray, no Remux)
   - Falls back to WEB 1080p while waiting for 4K availability
   - Strongly prefers German DL (Dual Language: Original + German) releases
-  - English-only releases are grabbed and upgraded when German DL is available
-  - Rejects releases without English audio
+  - All language tiers are grabbable; system upgrades automatically
   - Prefers HDR (DV > HDR10+ > HDR10 > HLG > SDR) at 4K
   - Rejects Dolby Vision without HDR fallback (compatibility)
   - Netflix-like streaming quality target
@@ -25,7 +27,7 @@ tags:
   - HDR
   - Streaming
 upgradesAllowed: true
-minCustomFormatScore: 0
+minCustomFormatScore: -15000
 upgradeUntilScore: 35000
 minScoreIncrement: 1
 
@@ -49,22 +51,25 @@ custom_formats_sonarr:
   # --- German language scoring (core preference) ---
   # German DL = Dual Language (Original + German) — the ideal release
   - name: (TG-S) German DL
-    score: 11000
-  - name: (TG-S) German DL (undefined)
-    score: 11000
-  # German audio present (may be German-only without original)
-  - name: (TG-S) German
     score: 10000
+  - name: (TG-S) German DL (undefined)
+    score: 10000
+  # German audio present (German-only without original)
+  - name: (TG-S) German
+    score: 3000
   # Resolution quality boosts for German releases
   - name: (TG-S) German 2160p Booster
     score: 9000
   - name: (TG-S) German 1080p Booster
     score: 650
 
-  # --- Language rejection ---
-  # Reject releases that do not contain English audio
+  # --- Language penalties (soft preference via scoring) ---
+  # Penalise releases missing English audio
   - name: '(TG-S) Language: Not English'
-    score: -10000
+    score: -11000
+  # Penalise releases missing the original/native audio
+  - name: '(TG-S) Language: Not Original'
+    score: -5000
 
   # --- German release group tiers ---
   - name: (TG-S) German Web Tier 01
@@ -132,20 +137,21 @@ custom_formats_radarr:
 
   # --- German language scoring (core preference) ---
   - name: (TG-R) German DL
-    score: 11000
-  - name: (TG-R) German DL (undefined)
-    score: 11000
-  - name: (TG-R) German
     score: 10000
+  - name: (TG-R) German DL (undefined)
+    score: 10000
+  - name: (TG-R) German
+    score: 3000
   - name: (TG-R) German 2160p Booster
     score: 9000
   - name: (TG-R) German 1080p Booster
     score: 650
 
-  # --- Language rejection ---
-  # Reject releases that do not contain English audio
+  # --- Language penalties (soft preference via scoring) ---
   - name: '(TG-R) Language: Not English'
-    score: -10000
+    score: -11000
+  - name: '(TG-R) Language: Not Original'
+    score: -5000
 
   # --- HDR preference (4K benefit) ---
   # DV with HDR fallback is the best (Plex compatible)
@@ -238,4 +244,4 @@ upgrade_until:
   id: -1
   name: WEB 2160p
 
-language: must_original
+language: any
