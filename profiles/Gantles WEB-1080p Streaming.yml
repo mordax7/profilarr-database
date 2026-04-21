@@ -55,7 +55,7 @@ custom_formats_sonarr:
 
   # --- Language rejection ---
   # Reject releases that do not contain English audio
-  - name: (TG-S) Language: Not English
+  - name: '(TG-S) Language: Not English'
     score: -10000
 
   # --- German release group tiers ---
@@ -130,7 +130,7 @@ custom_formats_radarr:
 
   # --- Language rejection ---
   # Reject releases that do not contain English audio
-  - name: (TG-R) Language: Not English
+  - name: '(TG-R) Language: Not English'
     score: -10000
 
   # --- German release group tiers ---
