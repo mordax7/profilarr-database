@@ -15,8 +15,8 @@ description: >-
   - Falls back to WEB 1080p while waiting for 4K availability
   - Strongly prefers German DL (Dual Language: Original + German) releases
   - All language tiers are grabbable; system upgrades automatically
-  - Prefers HDR (DV > HDR10+ > HDR10 > HLG > SDR) at 4K
-  - Rejects Dolby Vision without HDR fallback (compatibility)
+  - Prefers HDR (HDR10+ > HDR10 > HLG > SDR) at 4K
+  - Rejects ALL Dolby Vision releases (streaming compatibility)
   - Netflix-like streaming quality target
   - Average Movie Size: 10-25 GB
   - Average Episode Size: 4-10 GB
@@ -103,6 +103,18 @@ custom_formats_sonarr:
   - name: (TG-S) Repack3
     score: 7
 
+  # --- HDR preference (4K benefit) ---
+  - name: (TG-S) HDR10+ Boost
+    score: 1000
+  - name: (TG-S) HDR
+    score: 500
+  # Ban ALL Dolby Vision — causes playback issues when streaming on non-DV devices
+  - name: (TG-S) DV Boost
+    score: -35000
+  # Reject generated/fake dynamic HDR
+  - name: (TG-S) Generated Dynamic HDR
+    score: -10000
+
   # --- Bans (hard reject) ---
   - name: (TG-S) German LQ
     score: -35000
@@ -154,18 +166,12 @@ custom_formats_radarr:
     score: -5000
 
   # --- HDR preference (4K benefit) ---
-  # DV with HDR fallback is the best (Plex compatible)
-  - name: (TG-R) DV Boost
-    score: 1500
   - name: (TG-R) HDR10+ Boost
     score: 1000
   - name: (TG-R) HDR
     score: 500
-  # Reject DV without HDR fallback — causes playback issues on non-DV displays
-  - name: (TG-R) DV (w&o HDR fallback)
-    score: -35000
-  # Reject DV from disk sources (bad compatibility)
-  - name: (TG-R) DV (Disk)
+  # Ban ALL Dolby Vision — causes playback issues when streaming on non-DV devices
+  - name: (TG-R) DV Boost
     score: -35000
   # Reject generated/fake dynamic HDR
   - name: (TG-R) Generated Dynamic HDR

@@ -1,6 +1,6 @@
 name: Gantles WEB-1080p Streaming
 description: >-
-  Streaming-quality 1080p WEB-only profile with 7-tier language preference.
+  Streaming-quality 1080p profile with 7-tier language preference.
 
   Language preference (upgrade ladder — grabs first available, upgrades upward):
     1. Native + English + German — best, no further upgrade
@@ -11,15 +11,18 @@ description: >-
     6. Native only — upgrades when English/German appears
     7. German only — last resort, upgrades toward any better tier
 
-  - Targets WEB-DL and WEBRip 1080p only (no Bluray, no Remux)
+  - Targets WEB-DL and WEBRip 1080p primarily
+  - Falls back to Bluray 1080p when no WEB release exists
   - Strongly prefers German DL (Dual Language: Original + German) releases
   - All language tiers are grabbable; system upgrades automatically
+  - Rejects ALL Dolby Vision releases (streaming compatibility)
   - Netflix-like streaming quality target
   - Average Movie Size: 4-10 GB
   - Average Episode Size: 1-4 GB
 tags:
   - 1080p
   - WEB
+  - Bluray
   - German
   - Streaming
 upgradesAllowed: true
@@ -73,6 +76,14 @@ custom_formats_sonarr:
   - name: (TG-S) German Scene
     score: 1700
 
+  # --- German Bluray release group tiers ---
+  - name: (TG-S) German Bluray Tier 01
+    score: 2900
+  - name: (TG-S) German Bluray Tier 02
+    score: 2650
+  - name: (TG-S) German Bluray Tier 03
+    score: 2300
+
   # --- General WEB release group tiers (English/international groups) ---
   - name: (TG-S) WEB Tier 01
     score: 1700
@@ -80,6 +91,12 @@ custom_formats_sonarr:
     score: 1650
   - name: (TG-S) WEB Tier 03
     score: 1600
+
+  # --- General HD Bluray release group tiers ---
+  - name: (TG-S) HD Bluray Tier 01
+    score: 1800
+  - name: (TG-S) HD Bluray Tier 02
+    score: 1750
 
   # --- Streaming source boost ---
   - name: (TG-S) HD Streaming Boost
@@ -92,6 +109,11 @@ custom_formats_sonarr:
     score: 6
   - name: (TG-S) Repack3
     score: 7
+
+  # --- Dolby Vision ban (streaming compatibility) ---
+  # Ban ALL Dolby Vision — causes playback issues when streaming on non-DV devices
+  - name: (TG-S) DV Boost
+    score: -35000
 
   # --- Bans (hard reject) ---
   - name: (TG-S) German LQ
@@ -149,6 +171,14 @@ custom_formats_radarr:
   - name: (TG-R) German Scene
     score: 1700
 
+  # --- German Bluray release group tiers ---
+  - name: (TG-R) German Bluray Tier 01
+    score: 2900
+  - name: (TG-R) German Bluray Tier 02
+    score: 2650
+  - name: (TG-R) German Bluray Tier 03
+    score: 2300
+
   # --- General WEB release group tiers ---
   - name: (TG-R) WEB Tier 01
     score: 1700
@@ -157,6 +187,14 @@ custom_formats_radarr:
   - name: (TG-R) WEB Tier 03
     score: 1600
 
+  # --- General HD Bluray release group tiers ---
+  - name: (TG-R) HD Bluray Tier 01
+    score: 1800
+  - name: (TG-R) HD Bluray Tier 02
+    score: 1750
+  - name: (TG-R) HD Bluray Tier 03
+    score: 1700
+
   # --- Repack/Proper ---
   - name: (TG-R) Repack&Proper
     score: 5
@@ -164,6 +202,11 @@ custom_formats_radarr:
     score: 6
   - name: (TG-R) Repack3
     score: 7
+
+  # --- Dolby Vision ban (streaming compatibility) ---
+  # Ban ALL Dolby Vision — causes playback issues when streaming on non-DV devices
+  - name: (TG-R) DV Boost
+    score: -35000
 
   # --- Bans (hard reject) ---
   - name: (TG-R) German LQ
@@ -188,7 +231,7 @@ custom_formats_radarr:
     score: -35000
 
 # ---------------------------------------------------------------------------
-# Allowed qualities — WEB only, 1080p target
+# Allowed qualities — WEB 1080p preferred, Bluray 1080p as fallback
 # ---------------------------------------------------------------------------
 qualities:
   - name: WEB 1080p
@@ -198,6 +241,8 @@ qualities:
       - id: 9
         name: WEBDL-1080p
     id: -1
+  - name: Bluray-1080p
+    id: 10
 
 upgrade_until:
   id: -1
