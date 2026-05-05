@@ -1,6 +1,7 @@
 name: Gantles WEB-2160p Streaming
 description: >-
-  Streaming-quality 4K WEB-only profile with 7-tier language preference and HDR boost.
+  Remote-safe streaming 4K WEB-only profile with 7-tier language preference,
+  smart Dolby Vision (HDR10 fallback required), and audio format optimization.
 
   Language preference (upgrade ladder — grabs first available, upgrades upward):
     1. Native + English + German — best, no further upgrade
@@ -11,21 +12,33 @@ description: >-
     6. Native only — upgrades when English/German appears
     7. German only — last resort, upgrades toward any better tier
 
+  Remote streaming bitrate targets:
+    - Preferred average bitrate: 12–18 Mbps
+    - Soft maximum: 20 Mbps (150 MB/min)
+    - Hard maximum: 25 Mbps (187.5 MB/min)
+    - Formula: Mbps × 7.5 = MB/min
+    - 4K file at ~15 Mbps (e.g. Emma. 2020, 13 GB / 2h) works remotely
+    - 4K file at ~30 Mbps (e.g. LOTR, 49 GB / 4h) stutters remotely
+
   - Targets WEB-DL and WEBRip 2160p primarily (no Bluray, no Remux)
   - Falls back to WEB 1080p while waiting for 4K availability
   - Strongly prefers German DL (Dual Language: Original + German) releases
   - All language tiers are grabbable; system upgrades automatically
   - Prefers HDR (HDR10+ > HDR10 > HLG > SDR) at 4K
-  - Rejects ALL Dolby Vision releases (streaming compatibility)
+  - Smart Dolby Vision: accepts DV only with HDR10 fallback (safe for all devices)
+  - Rejects DV without HDR10 fallback (causes playback issues)
+  - Prefers EAC3/AC3 audio (streaming-friendly, low bitrate)
+  - Penalizes TrueHD/DTS-HD MA/DTS:X/PCM (lossless audio = large files, transcode-prone)
   - Netflix-like streaming quality target
-  - Average Movie Size: 10-25 GB
-  - Average Episode Size: 4-10 GB
+  - Average Movie Size: 8-20 GB
+  - Average Episode Size: 3-8 GB
 tags:
   - 2160p
   - WEB
   - German
   - HDR
   - Streaming
+  - Remote Safe
 upgradesAllowed: true
 minCustomFormatScore: -15000
 upgradeUntilScore: 35000
@@ -47,6 +60,11 @@ custom_formats_sonarr:
     score: 50
   - name: (TG-S) 720p
     score: 5
+
+  # --- HEVC / 10-bit preference ---
+  # Virtually all 4K WEB-DL is HEVC; mild boost for 10-bit color depth
+  - name: (TG-S) 10bit
+    score: 50
 
   # --- German language scoring (core preference) ---
   # German DL = Dual Language (Original + German) — the ideal release
@@ -70,6 +88,32 @@ custom_formats_sonarr:
   # Penalise releases missing the original/native audio
   - name: '(TG-S) Language: Not Original'
     score: -5000
+
+  # --- Audio format scoring (remote streaming optimization) ---
+  # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
+  - name: (TG-S) DD+ ATMOS
+    score: 450
+  - name: (TG-S) DD+
+    score: 500
+  - name: (TG-S) DD
+    score: 300
+  # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
+  # TrueHD Atmos 7.1 alone can add 5-10 Mbps to total bitrate
+  - name: (TG-S) TrueHD ATMOS
+    score: -5000
+  - name: (TG-S) TrueHD
+    score: -5000
+  - name: (TG-S) DTS-HD MA
+    score: -5000
+  - name: (TG-S) DTS X
+    score: -5000
+  - name: (TG-S) PCM
+    score: -5000
+  - name: (TG-S) FLAC
+    score: -2000
+  # Mild penalty for basic DTS (higher bitrate than DD/DD+ but not lossless)
+  - name: (TG-S) DTS
+    score: -500
 
   # --- German release group tiers ---
   - name: (TG-S) German Web Tier 01
@@ -108,12 +152,27 @@ custom_formats_sonarr:
     score: 1000
   - name: (TG-S) HDR
     score: 500
-  # Ban ALL Dolby Vision — causes stuttering/playback issues when streaming
+  # --- Smart Dolby Vision ---
+  # Boost DV releases (only those with HDR10 fallback survive the ban below)
   - name: (TG-S) DV Boost
+    score: 1500
+  # Ban DV releases WITHOUT HDR10 fallback — these cause playback issues
+  # on non-DV devices and often require transcoding for remote streaming
+  - name: (TG-S) DV (w&o HDR fallback)
     score: -35000
-  # Reject generated/fake dynamic HDR
-  - name: (TG-S) Generated Dynamic HDR
-    score: -10000
+  # Ban disk-based DV (not relevant for WEB-only, defense in depth)
+  - name: (TG-S) DV (Disk)
+    score: -35000
+  # Note: (TG-S) Generated Dynamic HDR does not exist as a Sonarr CF —
+  # only the Radarr variant (TG-R) exists. Omitted here intentionally.
+
+  # --- Remux ban (remote streaming — too large, 30+ Mbps typical) ---
+  # Even though Remux qualities are not in the allowed list, some indexers
+  # may tag releases inconsistently. Explicit ban provides defense in depth.
+  - name: (TG-S) Remux Tier 01
+    score: -35000
+  - name: (TG-S) Remux Tier 02
+    score: -35000
 
   # --- Bans (hard reject) ---
   - name: (TG-S) German LQ
@@ -147,6 +206,10 @@ custom_formats_radarr:
   - name: (TG-R) 720p
     score: 5
 
+  # --- HEVC / 10-bit preference ---
+  - name: (TG-R) 10bit
+    score: 50
+
   # --- German language scoring (core preference) ---
   - name: (TG-R) German DL
     score: 10000
@@ -165,13 +228,48 @@ custom_formats_radarr:
   - name: '(TG-R) Language: Not Original'
     score: -5000
 
+  # --- Audio format scoring (remote streaming optimization) ---
+  # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
+  # EAC3 (DD+) is the standard for streaming services like Netflix, Disney+, etc.
+  - name: (TG-R) DD+ ATMOS
+    score: 450
+  - name: (TG-R) DD+
+    score: 500
+  - name: (TG-R) DD
+    score: 300
+  # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
+  # Example: LOTR Two Towers 4K with TrueHD Atmos 7.1 = ~30 Mbps total → stutters remotely
+  # Example: Emma. 2020 4K with EAC3 5.1 = ~15 Mbps total → works perfectly remotely
+  - name: (TG-R) TrueHD ATMOS
+    score: -5000
+  - name: (TG-R) TrueHD
+    score: -5000
+  - name: (TG-R) DTS-HD MA
+    score: -5000
+  - name: (TG-R) DTS X
+    score: -5000
+  - name: (TG-R) PCM
+    score: -5000
+  - name: (TG-R) FLAC
+    score: -2000
+  - name: (TG-R) DTS
+    score: -500
+
   # --- HDR preference (4K benefit) ---
   - name: (TG-R) HDR10+ Boost
     score: 1000
   - name: (TG-R) HDR
     score: 500
-  # Ban ALL Dolby Vision — causes stuttering/playback issues when streaming
+  # --- Smart Dolby Vision ---
+  # Boost DV releases (only those with HDR10 fallback survive the ban below)
   - name: (TG-R) DV Boost
+    score: 1500
+  # Ban DV releases WITHOUT HDR10 fallback — these cause playback issues
+  # on non-DV devices and often require transcoding for remote streaming
+  - name: (TG-R) DV (w&o HDR fallback)
+    score: -35000
+  # Ban disk-based DV (not relevant for WEB-only, defense in depth)
+  - name: (TG-R) DV (Disk)
     score: -35000
   # Reject generated/fake dynamic HDR
   - name: (TG-R) Generated Dynamic HDR
@@ -202,6 +300,14 @@ custom_formats_radarr:
     score: 6
   - name: (TG-R) Repack3
     score: 7
+
+  # --- Remux ban (remote streaming — too large, 30+ Mbps typical) ---
+  - name: (TG-R) Remux Tier 01
+    score: -35000
+  - name: (TG-R) Remux Tier 02
+    score: -35000
+  - name: (TG-R) Remux Tier 03
+    score: -35000
 
   # --- Bans (hard reject) ---
   - name: (TG-R) German LQ
