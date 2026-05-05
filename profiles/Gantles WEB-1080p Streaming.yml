@@ -15,7 +15,7 @@ description: >-
   - Falls back to Bluray 1080p when no WEB release exists
   - Strongly prefers German DL (Dual Language: Original + German) releases
   - All language tiers are grabbable; system upgrades automatically
-  - Rejects Dolby Vision without HDR fallback (streaming compatibility)
+  - Rejects ALL Dolby Vision releases (streaming compatibility)
   - Netflix-like streaming quality target
   - Average Movie Size: 4-10 GB
   - Average Episode Size: 1-4 GB
@@ -110,12 +110,9 @@ custom_formats_sonarr:
   - name: (TG-S) Repack3
     score: 7
 
-  # --- Dolby Vision (streaming compatibility) ---
-  # Reject DV without HDR fallback — causes playback issues on non-DV devices
-  - name: (TG-S) DV (w&o HDR fallback)
-    score: -35000
-  # Reject DV from disk sources (bad compatibility)
-  - name: (TG-S) DV (Disk)
+  # --- Dolby Vision ban (streaming compatibility) ---
+  # Ban ALL Dolby Vision — causes stuttering/playback issues when streaming
+  - name: (TG-S) DV Boost
     score: -35000
 
   # --- Bans (hard reject) ---
@@ -206,12 +203,9 @@ custom_formats_radarr:
   - name: (TG-R) Repack3
     score: 7
 
-  # --- Dolby Vision (streaming compatibility) ---
-  # Reject DV without HDR fallback — causes playback issues on non-DV devices
-  - name: (TG-R) DV (w&o HDR fallback)
-    score: -35000
-  # Reject DV from disk sources (bad compatibility)
-  - name: (TG-R) DV (Disk)
+  # --- Dolby Vision ban (streaming compatibility) ---
+  # Ban ALL Dolby Vision — causes stuttering/playback issues when streaming
+  - name: (TG-R) DV Boost
     score: -35000
 
   # --- Bans (hard reject) ---
