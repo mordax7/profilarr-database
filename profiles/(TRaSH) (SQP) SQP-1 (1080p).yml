@@ -65,8 +65,6 @@ custom_formats_radarr:
   score: 7
 - name: (TG-R) BR-DISK
   score: -10000
-- name: (TG-R) Generated Dynamic HDR
-  score: -10000
 - name: (TG-R) LQ
   score: -10000
 - name: (TG-R) LQ (Release Title)
@@ -74,12 +72,6 @@ custom_formats_radarr:
 - name: (TG-R) x265 (HD)
   score: -10000
 - name: (TG-R) 3D
-  score: -10000
-- name: (TG-R) Extras
-  score: -10000
-- name: (TG-R) Sing-Along Versions
-  score: -10000
-- name: (TG-R) 10bit
   score: -10000
 - name: (TG-R) AV1
   score: -10000

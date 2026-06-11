@@ -1,0 +1,6 @@
+name: friDay
+pattern: \b(friDay)\b(?=[ ._-]web[ ._-]?(dl|rip)\b)
+description: ''
+tags:
+- TRaSH
+tests: []

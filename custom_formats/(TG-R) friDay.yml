@@ -1,0 +1,29 @@
+name: (TG-R) friDay
+description: 'friDay Video is a Taiwanese streaming service owned by Far EasTone,
+  one of Taiwan''s major telecom providers, and is Taiwan''s number one domestic streaming
+  platform. It offers movies, dramas, variety shows, live news, and anime, with a
+  strong focus on Korean, Japanese, and local Taiwanese content. New releases and
+  simulcast titles are regularly added, making it a popular choice for fans of Asian
+  entertainment in Taiwan.
+
+  For more information, visit the [Far EasTone Wikipedia page](https://en.wikipedia.org/wiki/Far_EasTone).'
+tags:
+- TRaSH
+- Radarr Only
+conditions:
+- name: friDay
+  type: release_title
+  required: true
+  negate: false
+  pattern: friDay
+- name: WEBDL
+  type: source
+  required: false
+  negate: false
+  source: web_dl
+- name: WEBRIP
+  type: source
+  required: false
+  negate: false
+  source: webrip
+tests: []
