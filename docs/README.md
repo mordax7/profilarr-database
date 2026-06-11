@@ -167,8 +167,8 @@ Both profiles penalize lossless/high-bitrate audio and prefer streaming-friendly
 
 | Custom Format | Score | Rationale |
 |--------------|-------|-----------|
+| DD+ ATMOS | +550 | Lossy Atmos — streaming-friendly spatial audio with zero extra bitrate |
 | DD+ (EAC3) | +500 | Standard streaming codec (Netflix, Disney+, etc.) |
-| DD+ ATMOS | +450 | Lossy Atmos — streaming-friendly spatial audio |
 | DD (AC3) | +300 | Legacy streaming codec — universally compatible |
 | DTS | -500 | Higher bitrate than DD/DD+ but not lossless |
 | FLAC | -2,000 | Lossless — adds 1-3 Mbps overhead |
@@ -191,6 +191,30 @@ Instead of banning all Dolby Vision, the 2160p profile uses "smart DV":
 **Result:** Only DV releases with HDR10 fallback are accepted. DV-capable devices get Dolby Vision; others fall back to HDR10 seamlessly.
 
 The 1080p profile bans all DV (`DV Boost: -35,000`) since DV at 1080p is rare and not beneficial.
+
+### HLG scoring (2160p profile only)
+
+HLG (Hybrid Log-Gamma) is an HDR format that's better than SDR but less common than HDR10. The 2160p profile scores HLG at +250, fitting into the HDR preference chain:
+
+| Format | Score | Ranking |
+|--------|-------|---------|
+| HDR10+ Boost | +1,000 | Best HDR format |
+| HDR (HDR10) | +500 | Standard HDR |
+| HLG | +250 | Better than SDR, less common |
+| SDR | 0 | No boost |
+
+### Defensive bans
+
+Both profiles include several "defense in depth" bans to reject problematic releases that slip through:
+
+| Custom Format | Score | What it catches |
+|--------------|-------|-----------------|
+| `No-RlsGroup` | -35,000 | Releases with no release group — often poorly tagged or low quality |
+| `Obfuscated` | -35,000 | Obfuscated releases that hide their true identity |
+| `Retags` | -35,000 | Re-tagged releases with incorrect metadata |
+| `Bad Dual Groups` | -35,000 | Known bad dual-audio groups — important since German DL is the #1 priority |
+
+These are in addition to the standard quality bans (LQ, BR-DISK, Extras, AV1, Upscaled, etc.).
 
 ### Recommended quality definition values
 

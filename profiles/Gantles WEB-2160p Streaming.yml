@@ -92,7 +92,7 @@ custom_formats_sonarr:
   # --- Audio format scoring (remote streaming optimization) ---
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
   - name: (TG-S) DD+ ATMOS
-    score: 450
+    score: 550
   - name: (TG-S) DD+
     score: 500
   - name: (TG-S) DD
@@ -152,6 +152,8 @@ custom_formats_sonarr:
     score: 1000
   - name: (TG-S) HDR
     score: 500
+  - name: (TG-S) HLG
+    score: 250
   # --- Smart Dolby Vision ---
   # Boost DV releases (only those with HDR10 fallback survive the ban below)
   - name: (TG-S) DV Boost
@@ -193,6 +195,14 @@ custom_formats_sonarr:
     score: -35000
   - name: (TG-S) Upscaled
     score: -35000
+  - name: (TG-S) No-RlsGroup
+    score: -35000
+  - name: (TG-S) Obfuscated
+    score: -35000
+  - name: (TG-S) Retags
+    score: -35000
+  - name: (TG-S) Bad Dual Groups
+    score: -35000
 
 # ---------------------------------------------------------------------------
 # Radarr-specific custom formats
@@ -232,7 +242,7 @@ custom_formats_radarr:
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
   # EAC3 (DD+) is the standard for streaming services like Netflix, Disney+, etc.
   - name: (TG-R) DD+ ATMOS
-    score: 450
+    score: 550
   - name: (TG-R) DD+
     score: 500
   - name: (TG-R) DD
@@ -260,6 +270,8 @@ custom_formats_radarr:
     score: 1000
   - name: (TG-R) HDR
     score: 500
+  - name: (TG-R) HLG
+    score: 250
   # --- Smart Dolby Vision ---
   # Boost DV releases (only those with HDR10 fallback survive the ban below)
   - name: (TG-R) DV Boost
@@ -331,6 +343,14 @@ custom_formats_radarr:
   - name: (TG-R) Extras
     score: -35000
   - name: (TG-R) AV1
+    score: -35000
+  - name: (TG-R) No-RlsGroup
+    score: -35000
+  - name: (TG-R) Obfuscated
+    score: -35000
+  - name: (TG-R) Retags
+    score: -35000
+  - name: (TG-R) Bad Dual Groups
     score: -35000
 
 # ---------------------------------------------------------------------------
