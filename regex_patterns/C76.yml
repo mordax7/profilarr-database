@@ -1,5 +1,5 @@
-name: R&H
-pattern: \b(R&H)\b
+name: C76
+pattern: ^(C76)$
 description: ''
 tags:
 - TRaSH
