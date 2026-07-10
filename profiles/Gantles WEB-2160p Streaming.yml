@@ -203,6 +203,8 @@ custom_formats_sonarr:
     score: -35000
   - name: (TG-S) Bad Dual Groups
     score: -35000
+  - name: (TG-S) Hardcoded Subs
+    score: -35000
 
 # ---------------------------------------------------------------------------
 # Radarr-specific custom formats
@@ -351,6 +353,8 @@ custom_formats_radarr:
   - name: (TG-R) Retags
     score: -35000
   - name: (TG-R) Bad Dual Groups
+    score: -35000
+  - name: (TG-R) Hardcoded Subs
     score: -35000
 
 # ---------------------------------------------------------------------------

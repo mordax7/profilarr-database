@@ -1,0 +1,14 @@
+name: (TG-S) Hardcoded Subs
+description: Rejects releases with hardcoded (burned-in) subtitles that cannot be
+  disabled. These are permanently embedded in the video stream and are detected via
+  common release title markers like HC, KORSUB, and HardSub.
+tags:
+- Custom
+- Sonarr Only
+conditions:
+- name: HC / HardSub / KORSUB
+  type: release_title
+  required: false
+  negate: false
+  pattern: (?:^|[\s._-])(?:HC|HC[\s._-]?SUBS?|HARD[\s._-]?SUBS?|HARDSUBS?|KORSUBS?)(?:$|[\s._-])
+tests: []
