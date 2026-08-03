@@ -7,48 +7,50 @@ description: 'This Special Quality Profile is an advanced Quality Profile design
 tags:
 - TRaSH
 upgradesAllowed: true
-minCustomFormatScore: 3070
+minCustomFormatScore: 3970
 upgradeUntilScore: 10000
 minScoreIncrement: 1
 custom_formats: []
 custom_formats_sonarr: []
 custom_formats_radarr:
 - name: (TG-R) TrueHD ATMOS
-  score: 1860
+  score: 2510
 - name: (TG-R) DTS X
-  score: 1860
+  score: 2510
 - name: (TG-R) ATMOS (undefined)
-  score: 720
+  score: 480
 - name: (TG-R) DD+ ATMOS
-  score: 720
+  score: 480
 - name: (TG-R) TrueHD
-  score: 1850
+  score: 2180
 - name: (TG-R) DTS-HD MA
-  score: 1850
+  score: 2180
 - name: (TG-R) FLAC
-  score: 420
-- name: (TG-R) PCM
-  score: 420
-- name: (TG-R) DTS-HD HRA
-  score: 320
-- name: (TG-R) DD+
-  score: 715
-- name: (TG-R) DTS-ES
-  score: 170
-- name: (TG-R) DTS
-  score: 120
-- name: (TG-R) AAC
-  score: 20
-- name: (TG-R) DD
-  score: 655
-- name: (TG-R) 2.0 Stereo
-  score: 190
-- name: (TG-R) 5.1 Surround
-  score: 370
-- name: (TG-R) 7.1 Surround
   score: 380
+- name: (TG-R) PCM
+  score: 380
+- name: (TG-R) DTS-HD HRA
+  score: 330
+- name: (TG-R) DD+
+  score: 280
+- name: (TG-R) DTS-ES
+  score: 330
+- name: (TG-R) DTS
+  score: 75
+- name: (TG-R) AAC
+  score: 80
+- name: (TG-R) DD
+  score: 80
+- name: (TG-R) 2.0 Stereo
+  score: 310
+- name: (TG-R) 5.1 Surround
+  score: 780
+- name: (TG-R) 6.1 Surround
+  score: 780
+- name: (TG-R) 7.1 Surround
+  score: 830
 - name: (TG-R) WEBDL Boost
-  score: 3070
+  score: 3970
 - name: (TG-R) WEB Tier 01
   score: 30
 - name: (TG-R) WEB Tier 02
@@ -56,9 +58,9 @@ custom_formats_radarr:
 - name: (TG-R) WEB Tier 03
   score: 10
 - name: (TG-R) BHDStudio
-  score: 2945
+  score: 3900
 - name: (TG-R) hallowed
-  score: 2955
+  score: 3910
 - name: (TG-R) TheFarm
   score: 10
 - name: (TG-R) Repack&Proper
