@@ -80,6 +80,9 @@ custom_formats_sonarr:
   # Penalise releases missing the original/native audio
   - name: '(TG-S) Language: Not Original'
     score: -5000
+  # Penalise sub-only German releases (prefer German dub)
+  - name: (TG-S) German Subbed
+    score: -5000
 
   # --- Audio format scoring (remote streaming optimization) ---
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
@@ -89,6 +92,10 @@ custom_formats_sonarr:
     score: 500
   - name: (TG-S) DD
     score: 300
+  - name: (TG-S) AAC
+    score: 200
+  - name: (TG-S) Opus
+    score: 150
   # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
   - name: (TG-S) TrueHD ATMOS
     score: -5000
@@ -155,6 +162,8 @@ custom_formats_sonarr:
     score: -35000
 
   # --- Bans (hard reject) ---
+  - name: (TG-S) WiTH AD
+    score: -35000
   - name: (TG-S) German LQ
     score: -35000
   - name: (TG-S) German LQ (release title)
@@ -182,6 +191,16 @@ custom_formats_sonarr:
   - name: (TG-S) Bad Dual Groups
     score: -35000
   - name: (TG-S) Hardcoded Subs
+    score: -35000
+  - name: (TG-S) x266
+    score: -35000
+  - name: (TG-S) VP9
+    score: -35000
+  - name: (TG-S) MPEG2
+    score: -35000
+  - name: (TG-S) VC-1
+    score: -35000
+  - name: (TG-S) MP3
     score: -35000
 
 # ---------------------------------------------------------------------------
@@ -213,6 +232,9 @@ custom_formats_radarr:
     score: -11000
   - name: '(TG-R) Language: Not Original'
     score: -5000
+  # Penalise sub-only German releases (prefer German dub)
+  - name: (TG-R) German Subbed
+    score: -5000
 
   # --- Audio format scoring (remote streaming optimization) ---
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
@@ -222,6 +244,10 @@ custom_formats_radarr:
     score: 500
   - name: (TG-R) DD
     score: 300
+  - name: (TG-R) AAC
+    score: 200
+  - name: (TG-R) Opus
+    score: 150
   # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
   - name: (TG-R) TrueHD ATMOS
     score: -5000
@@ -237,6 +263,10 @@ custom_formats_radarr:
     score: -2000
   - name: (TG-R) DTS
     score: -500
+
+  # --- Generated Dynamic HDR ban (defense in depth at 1080p) ---
+  - name: (TG-R) Generated Dynamic HDR
+    score: -10000
 
   # --- German release group tiers ---
   - name: (TG-R) German Web Tier 01
@@ -285,6 +315,8 @@ custom_formats_radarr:
     score: -35000
 
   # --- Bans (hard reject) ---
+  - name: (TG-R) WiTH AD
+    score: -35000
   - name: (TG-R) German LQ
     score: -35000
   - name: (TG-R) German LQ (release title)
@@ -316,6 +348,18 @@ custom_formats_radarr:
   - name: (TG-R) Bad Dual Groups
     score: -35000
   - name: (TG-R) Hardcoded Subs
+    score: -35000
+  - name: (TG-R) x266
+    score: -35000
+  - name: (TG-R) VP9
+    score: -35000
+  - name: (TG-R) MPEG2
+    score: -35000
+  - name: (TG-R) VC-1
+    score: -35000
+  - name: (TG-R) MP3
+    score: -35000
+  - name: (TG-R) Sing-Along Versions
     score: -35000
 
 # ---------------------------------------------------------------------------

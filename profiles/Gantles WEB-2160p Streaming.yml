@@ -88,6 +88,9 @@ custom_formats_sonarr:
   # Penalise releases missing the original/native audio
   - name: '(TG-S) Language: Not Original'
     score: -5000
+  # Penalise sub-only German releases (prefer German dub)
+  - name: (TG-S) German Subbed
+    score: -5000
 
   # --- Audio format scoring (remote streaming optimization) ---
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
@@ -97,6 +100,10 @@ custom_formats_sonarr:
     score: 500
   - name: (TG-S) DD
     score: 300
+  - name: (TG-S) AAC
+    score: 200
+  - name: (TG-S) Opus
+    score: 150
   # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
   # TrueHD Atmos 7.1 alone can add 5-10 Mbps to total bitrate
   - name: (TG-S) TrueHD ATMOS
@@ -177,6 +184,8 @@ custom_formats_sonarr:
     score: -35000
 
   # --- Bans (hard reject) ---
+  - name: (TG-S) WiTH AD
+    score: -35000
   - name: (TG-S) German LQ
     score: -35000
   - name: (TG-S) German LQ (release title)
@@ -204,6 +213,16 @@ custom_formats_sonarr:
   - name: (TG-S) Bad Dual Groups
     score: -35000
   - name: (TG-S) Hardcoded Subs
+    score: -35000
+  - name: (TG-S) x266
+    score: -35000
+  - name: (TG-S) VP9
+    score: -35000
+  - name: (TG-S) MPEG2
+    score: -35000
+  - name: (TG-S) VC-1
+    score: -35000
+  - name: (TG-S) MP3
     score: -35000
 
 # ---------------------------------------------------------------------------
@@ -239,6 +258,9 @@ custom_formats_radarr:
     score: -11000
   - name: '(TG-R) Language: Not Original'
     score: -5000
+  # Penalise sub-only German releases (prefer German dub)
+  - name: (TG-R) German Subbed
+    score: -5000
 
   # --- Audio format scoring (remote streaming optimization) ---
   # Prefer streaming-friendly lossy codecs (low bitrate, no transcoding needed)
@@ -249,6 +271,10 @@ custom_formats_radarr:
     score: 500
   - name: (TG-R) DD
     score: 300
+  - name: (TG-R) AAC
+    score: 200
+  - name: (TG-R) Opus
+    score: 150
   # Penalize lossless/high-bitrate audio (large files, transcode on remote playback)
   # Example: LOTR Two Towers 4K with TrueHD Atmos 7.1 = ~30 Mbps total → stutters remotely
   # Example: Emma. 2020 4K with EAC3 5.1 = ~15 Mbps total → works perfectly remotely
@@ -266,6 +292,12 @@ custom_formats_radarr:
     score: -2000
   - name: (TG-R) DTS
     score: -500
+
+  # --- IMAX preference (Radarr 2160p) ---
+  - name: (TG-R) IMAX Enhanced
+    score: 100
+  - name: (TG-R) IMAX
+    score: 50
 
   # --- HDR preference (4K benefit) ---
   - name: (TG-R) HDR10+ Boost
@@ -324,6 +356,8 @@ custom_formats_radarr:
     score: -35000
 
   # --- Bans (hard reject) ---
+  - name: (TG-R) WiTH AD
+    score: -35000
   - name: (TG-R) German LQ
     score: -35000
   - name: (TG-R) German LQ (release title)
@@ -355,6 +389,18 @@ custom_formats_radarr:
   - name: (TG-R) Bad Dual Groups
     score: -35000
   - name: (TG-R) Hardcoded Subs
+    score: -35000
+  - name: (TG-R) x266
+    score: -35000
+  - name: (TG-R) VP9
+    score: -35000
+  - name: (TG-R) MPEG2
+    score: -35000
+  - name: (TG-R) VC-1
+    score: -35000
+  - name: (TG-R) MP3
+    score: -35000
+  - name: (TG-R) Sing-Along Versions
     score: -35000
 
 # ---------------------------------------------------------------------------
