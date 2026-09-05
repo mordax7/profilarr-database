@@ -102,14 +102,26 @@ written. `validate-migration.py` caught all four as dangling references;
 they're fixed in the current file. The same class of bug is exactly what
 future upstream pulls can reintroduce — hence step 3 above.
 
-## Known pre-existing issues (not Gantles-related)
+## A caveat about `validate-migration.py`
 
 `ops/30.delete-duplicate-regex.sql` and `ops/66.fix-black-and-white-edition-cfs.sql`
 fail with `UNIQUE constraint failed: condition_patterns.custom_format_name,
-condition_patterns.condition_name` when replayed against a clean database.
-Both predate this fork and are unrelated to the Gantles profiles — not fixed
-here, just noted so they don't get mistaken for something this migration
-broke.
+condition_patterns.condition_name` when replayed by this repo's validator —
+**but this is a false positive of the validator, not a real bug.** Confirmed
+against the actual linked Profilarr instance: both commits (`bc95b82 Delete
+Duplicate Regex` and `65df316 Fix Black and White Edition CFs`) show status
+`Installed` in the database's Updates log, meaning Profilarr's real compiler
+applied them without issue.
+
+The discrepancy is expected: `validate-migration.py` replays every `ops/`
+file fresh, in one pass, via the plain `sqlite3` CLI. Profilarr's real
+compiler applies each op incrementally as it's published, replaying value
+guards, conflict detection, and op-level state that a raw one-shot SQL
+replay doesn't reproduce. So this validator is a *useful smoke test* for
+`tweaks/gantles-migration.sql` itself (it's what caught the 4 real stale-name
+bugs), but a red flag from it about `ops/` files that predate this fork is
+worth double-checking against the linked instance's Updates log before
+treating it as a genuine issue.
 
 ## Verifying against the real source
 
@@ -122,3 +134,8 @@ quality groups, and language setting. If you ever need to re-verify after a
 manual edit, diff the relevant `INSERT INTO quality_profile_custom_formats`
 rows in `tweaks/gantles-migration.sql` against the YAML on `main` the same
 way.
+
+Also confirmed live: `origin`'s `v2` branch linked into a running Profilarr
+instance, commit `2cedc48` shows `Installed`, and both profiles' General and
+Scoring pages match the source exactly — including the one arr-specific
+asymmetry (`HD Bluray Tier 03` scored for Radarr only, absent from Sonarr).
